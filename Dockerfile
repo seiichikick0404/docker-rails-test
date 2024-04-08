@@ -8,11 +8,10 @@ RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - \
 RUN npm install --global yarn
 
 #docker内の作業ディレクトリを作成＆設定
-WORKDIR /docker_rails_test
+WORKDIR /docker-rails-test
 
 #Gemfile,Gemfile.lockをローカルからCOPY
-COPY Gemfile Gemfile.lock /docker_rails_test/
-
+COPY ./src /docker-rails-test
 #コンテナ内にコピーしたGemfileを用いてbundel install
 RUN bundle install
 

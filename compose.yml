@@ -1,23 +1,19 @@
 services:
   #dbコンテナ
   db:
-    image: mariadb:10.9
+    image: mysql:8.0
     environment:
-      MARIADB_ROOT_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: password
     volumes:
-      - db-data:/var/lib/mysql
+      - ./src/db/mysql_data:/var/lib/mysql
   #webコンテナ
   web:
     build: .
     depends_on:
       - db
-    environment:
-      DATABASE_PASSWORD: password
     ports:
       - "3000:3000"
     volumes:
-      - .:/docker_rails_test
+      - ./src:/docker-rails-test
 volumes:
   db-data:
-https://github.com/ユーザー名/リポジトリ名.git
-https://github.com/seiichikick0404/docker-rails-test
