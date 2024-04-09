@@ -1,5 +1,6 @@
-#Docker Hubからruby:3.0.5のイメージをプルする
-FROM ruby:3.0.5
+#Docker Hubからruby:3.2.2のイメージをプルする
+FROM ruby:3.2.2
+ARG RUBYGEMS_VERSION=3.3.20
 
 #debian系のためapt-getを使用してnode.jsとyarnをインストール
 RUN apt-get update -qq
