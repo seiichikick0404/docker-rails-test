@@ -17,5 +17,15 @@ services:
       - "3000:3000"
     volumes:
       - ./src:/docker-rails-test
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    depends_on:
+      - web
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./src/public:/docker-rails-test/public
 volumes:
   db-data:
