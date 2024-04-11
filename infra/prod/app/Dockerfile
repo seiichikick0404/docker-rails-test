@@ -15,6 +15,9 @@ WORKDIR /docker-rails-test
 #docker内の作業ディレクトリを作成＆設定
 WORKDIR /docker-rails-test
 
+# srcをdocker-rails-testにコピー
+COPY src /docker-rails-test
+
 # Bundle install
 RUN bundle install
 
