@@ -26,7 +26,7 @@ services:
     build:
       context: ./infra/prod/web
     ports:
-      - "80:80" # 実際の環境では80番ポートを指定
+      - "8080:80" # 実際の環境では80番ポートを指定
 
     depends_on:
       - app
