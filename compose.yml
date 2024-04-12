@@ -2,6 +2,7 @@ services:
   db:
     build: ./infra/dev/db
     environment:
+      TZ: Asia/Tokyo
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     volumes:
       - ./src/db/mysql_data:/var/lib/mysql

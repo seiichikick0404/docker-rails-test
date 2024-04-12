@@ -3,9 +3,10 @@ services:
     build:
       context: ./infra/prod/db
     environment:
+      TZ: Asia/Tokyo
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     volumes:
-      - db-data:/var/lib/mysql
+      - ./src/db/mysql_data:/var/lib/mysql
 
   app:
     build:
@@ -15,13 +16,18 @@ services:
       - db
     environment:
       RAILS_ENV: production
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./src:/docker-rails-test
+    user: root
 
   web:
     build:
       context: ./infra/prod/web
     ports:
-      - "8080:80"
-      - "443:443"
+      - "80:80" # 実際の環境では80番ポートを指定
+
     depends_on:
       - app
     volumes:
