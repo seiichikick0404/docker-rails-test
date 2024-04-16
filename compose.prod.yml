@@ -29,6 +29,9 @@ services:
       context: ./infra/prod/web
     ports:
       - "8080:80" # 実際の環境では80番ポートを指定
+    environment:
+      RAILS_ENV: production
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE}
 
     depends_on:
       - app
@@ -44,6 +47,8 @@ services:
     environment:
       DOMAINS: "docker-rails-test.seiprojects.com -> http://web:80"
       STAGE: "production"
+      RAILS_ENV: production
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE}
     volumes:
       - https-portal-data:/var/lib/https-portal
 
