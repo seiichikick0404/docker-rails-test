@@ -18,10 +18,10 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Build with Docker Compose
-        run: docker compose -f compose.yml build
+        run: docker compose -f compose.prod.yml build
 
       - name: Run containers
-        run: docker compose -f compose.yml up -d
+        run: docker compose -f compose.prod.yml up -d
 
       - name: Shutdown
         run: docker compose down
