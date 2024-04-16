@@ -31,7 +31,9 @@ jobs:
 
       - name: Run compose ps
         run: docker compose -f compose.yml ps
-        MYSQL_ROOT_PASSWORD
+        env:
+          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+          SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
 
       - name: Shutdown
         run: docker compose down
