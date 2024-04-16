@@ -25,23 +25,21 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-buildx-
 
-      - name: Build with Docker Compose
-        run: docker compose -f compose.yml build
-        env:
-          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
-          SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
+      - name: Build with Docker Compose using Buildx
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ./Dockerfile
+          push: false
+          load: true
+          cache-from: type=gha,scope=$GITHUB_REF_NAME
+          cache-to: type=gha,scope=$GITHUB_REF_NAME,mode=max
 
       - name: Run containers
-        run: docker-compose -f compose.yml up -d
-        env:
-          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
-          SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
+        run: docker compose -f compose.yml up -d
 
       - name: Run compose ps
-        run: docker-compose -f compose.yml ps
-        env:
-          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
-          SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
+        run: docker compose -f compose.yml ps
 
       - name: Shutdown
-        run: docker-compose down
+        run: docker compose down
