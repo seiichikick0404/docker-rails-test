@@ -1,5 +1,4 @@
 name: CI TEST
-run-name: ${{ github.actor }} is CI testing
 on:
   push:
     branches: [main]
@@ -11,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Set up Docker Buildx
@@ -22,18 +21,61 @@ jobs:
         with:
           path: /tmp/.buildx-cache
           key: ${{ runner.os }}-buildx-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-
+          restore-keys: ${{ runner.os }}-buildx-
 
-      - name: Build with Docker Compose using Buildx
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_ACCESS_TOKEN }}
+
+      - name: Build and cache app Docker image
         uses: docker/build-push-action@v4
         with:
-          context: .
-          file: ./Dockerfile
+          context: ./infra/dev/app
+          file: ./infra/dev/app/Dockerfile
           push: false
           load: true
-          cache-from: type=gha,scope=$GITHUB_REF_NAME
-          cache-to: type=gha,scope=$GITHUB_REF_NAME,mode=max
+          tags: your-dockerhub-username/app:latest
+          cache-from: type=local,src=/tmp/.buildx-cache/app
+          cache-to: type=local,dest=/tmp/.buildx-cache/app-new,mode=max
+
+      - name: Build and cache db Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: ./infra/dev/db
+          file: ./infra/dev/db/Dockerfile
+          push: false
+          load: true
+          tags: your-dockerhub-username/db:latest
+          cache-from: type=local,src=/tmp/.buildx-cache/db
+          cache-to: type=local,dest=/tmp/.buildx-cache/db-new,mode=max
+
+      - name: Build and cache web Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: ./infra/dev/web
+          file: ./infra/dev/web/Dockerfile
+          push: false
+          load: true
+          tags: your-dockerhub-username/web:latest
+          cache-from: type=local,src=/tmp/.buildx-cache/web
+          cache-to: type=local,dest=/tmp/.buildx-cache/web-new,mode=max
+
+      - name: Move Docker layers cache for app
+        run: |
+          rm -rf /tmp/.buildx-cache/app
+          mv /tmp/.buildx-cache/app-new /tmp/.buildx-cache/app
+
+      - name: Move Docker layers cache for db
+        run: |
+          rm -rf /tmp/.buildx-cache/db
+          mv /tmp/.buildx-cache/db-new /tmp/.buildx-cache/db
+
+      - name: Move Docker layers cache for web
+        run: |
+          rm -rf /tmp/.buildx-cache/web
+          mv /tmp/.buildx-cache/web-new /tmp/.buildx-cache/web
 
       - name: Run containers
         run: docker compose -f compose.yml up -d
@@ -41,5 +83,5 @@ jobs:
       - name: Run compose ps
         run: docker compose -f compose.yml ps
 
-      - name: Shutdown
+      - name: Shutdown containers
         run: docker compose down
