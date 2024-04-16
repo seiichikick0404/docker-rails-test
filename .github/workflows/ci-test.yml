@@ -21,6 +21,7 @@ jobs:
         run: docker compose -f compose.prod.yml build
         env:
           MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+          SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
 
       - name: Run containers
         run: docker compose -f compose.prod.yml up -d
