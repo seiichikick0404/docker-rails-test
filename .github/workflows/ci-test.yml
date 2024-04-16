@@ -9,13 +9,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    services:
-      docker:
-        image: docker:dind
-        options: --privileged
 
     steps:
-      - name: Checkout
+      - name: checkout
         uses: actions/checkout@v4
 
       - name: Set up Docker Buildx
