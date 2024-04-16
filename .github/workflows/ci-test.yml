@@ -23,12 +23,6 @@ jobs:
           key: ${{ runner.os }}-buildx-${{ github.sha }}
           restore-keys: ${{ runner.os }}-buildx-
 
-      - name: Login to DockerHub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_ACCESS_TOKEN }}
-
       - name: Build and cache app Docker image
         uses: docker/build-push-action@v4
         with:
@@ -36,7 +30,6 @@ jobs:
           file: ./infra/dev/app/Dockerfile
           push: false
           load: true
-          tags: your-dockerhub-username/app:latest
           cache-from: type=local,src=/tmp/.buildx-cache/app
           cache-to: type=local,dest=/tmp/.buildx-cache/app-new,mode=max
 
@@ -47,7 +40,6 @@ jobs:
           file: ./infra/dev/db/Dockerfile
           push: false
           load: true
-          tags: your-dockerhub-username/db:latest
           cache-from: type=local,src=/tmp/.buildx-cache/db
           cache-to: type=local,dest=/tmp/.buildx-cache/db-new,mode=max
 
@@ -58,7 +50,6 @@ jobs:
           file: ./infra/dev/web/Dockerfile
           push: false
           load: true
-          tags: your-dockerhub-username/web:latest
           cache-from: type=local,src=/tmp/.buildx-cache/web
           cache-to: type=local,dest=/tmp/.buildx-cache/web-new,mode=max
 
@@ -80,7 +71,7 @@ jobs:
       - name: Run containers
         run: docker compose -f compose.yml up -d
 
-      - name: Run compose ps
+      - name: Check running containers
         run: docker compose -f compose.yml ps
 
       - name: Shutdown containers
