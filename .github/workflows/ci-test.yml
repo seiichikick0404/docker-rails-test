@@ -26,11 +26,18 @@ jobs:
       - name: Run containers
         run: docker compose -f compose.yml up -d
 
+      - name: Run database create
+        run: docker-compose -f compose.yml run -T app rake db:create
+        env:
+          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+
       - name: Run database migrations
-        run: docker-compose -f compose.yml run app rails db:migrate
+        run: docker-compose -f compose.yml run -T app rails db:migrate
+        env:
+          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
 
       - name: Run unit test
-        run: docker compose -f compose.yml run app rails test
+        run: docker compose -f compose.yml run -T app rails test
 
       - name: Shutdown
         run: docker compose down
