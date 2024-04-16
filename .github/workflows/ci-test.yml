@@ -25,6 +25,9 @@ jobs:
 
       - name: Run containers
         run: docker compose -f compose.yml up -d
+        env:
+          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+          SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
 
       - name: Run compose ps
         run: docker compose -f compose.yml ps
