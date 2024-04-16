@@ -35,5 +35,11 @@ jobs:
           MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
           SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
 
+      - name: Run unit test
+        run: docker compose -f compose.yml exec app rails test
+        env:
+          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+          SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
+
       - name: Shutdown
         run: docker compose down
