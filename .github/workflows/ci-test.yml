@@ -26,8 +26,11 @@ jobs:
       - name: Run containers
         run: docker compose -f compose.yml up -d
 
+      - name: Run database migrations
+        run: docker-compose -f compose.yml run app rails db:migrate
+
       - name: Run unit test
-        run: docker compose -f compose.yml exec -T app bin/rails test
+        run: docker compose -f compose.yml run app rails test
 
       - name: Shutdown
         run: docker compose down
