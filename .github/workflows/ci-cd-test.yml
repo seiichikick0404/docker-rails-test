@@ -51,7 +51,7 @@ jobs:
       - name: Shutdown
         run: docker compose down
 
-  deploy to production:
+  deploy-to-production:
     needs: build-and-test
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
