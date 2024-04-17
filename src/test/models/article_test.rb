@@ -2,7 +2,7 @@ require "test_helper"
 
 class ArticleTest < ActiveSupport::TestCase
   def test_the_truth
-    assert true
+    assert false
   end
 
   # test "should not save article without title" do
