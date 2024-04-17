@@ -7,7 +7,7 @@ on:
     branches: [main]
 
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-latest
 
     steps:
@@ -50,3 +50,18 @@ jobs:
 
       - name: Shutdown
         run: docker compose down
+
+  deploy to production:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - name: Check
+        uses: actions/checkout@v4
+
+      - name: Deploy
+        run: |
+          echo "${{ secrets.PRIVATE_KEY }}" > private_key
+          chmod 600 private_key
+          ssh -oStrictHostKeyChecking=no ${{ secrets.USER_NAME }}@${{ secrets.HOST_NAME }} -i private_key "cd /home/ubuntu/web/docker-rails-test && git fetch github:shuncask/kanpai.git && git pull github:shuncask/kanpai.git"
