@@ -41,5 +41,10 @@ jobs:
           docker compose exec -T app rails db:create
           docker compose exec -T app rails db:migrate
 
+      - name: run test
+        shell: bash
+        run: |
+          docker compose exec -T app rails test
+
       - name: Shutdown
         run: docker compose down
