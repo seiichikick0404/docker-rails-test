@@ -45,6 +45,8 @@ jobs:
         shell: bash
         run: |
           docker compose exec -T app rails test
+        env:
+          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
 
       - name: Shutdown
         run: docker compose down
