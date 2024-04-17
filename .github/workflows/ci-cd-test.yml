@@ -64,4 +64,4 @@ jobs:
         run: |
           echo "${{ secrets.PRIVATE_KEY }}" > private_key
           chmod 600 private_key
-          ssh -oStrictHostKeyChecking=no ${{ secrets.USER_NAME }}@${{ secrets.HOST_NAME }} -i private_key "cd /home/ubuntu/web/docker-rails-test && git fetch git@github.com:seiichikick0404/docker-rails-test.git && git pull git@github.com:seiichikick0404/docker-rails-test.git && docker compose -f compose.prod build && docker compose -f compose.prod up -d"
+          ssh -oStrictHostKeyChecking=no ${{ secrets.USER_NAME }}@${{ secrets.HOST_NAME }} -i private_key "cd /home/ubuntu/web/docker-rails-test && git fetch git@github.com:seiichikick0404/docker-rails-test.git && git pull git@github.com:seiichikick0404/docker-rails-test.git && docker compose -f compose.prod.yml build && docker compose -f compose.prod.yml up -d"
