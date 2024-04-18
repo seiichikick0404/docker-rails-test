@@ -68,6 +68,7 @@ jobs:
           cd /home/ubuntu/web/docker-rails-test && \
           git fetch git@github.com:seiichikick0404/docker-rails-test.git && \
           git pull git@github.com:seiichikick0404/docker-rails-test.git && \
+          docker compose -f compose.prod.yml down && \
           docker compose -f compose.prod.yml build && \
           docker compose -f compose.prod.yml up -d && \
           docker compose -f compose.prod.yml run app rails db:create && \
