@@ -17,6 +17,11 @@ services:
       - "3000:3000"
     volumes:
       - ./src:/docker-rails-test
+    environment:
+      RAILS_ENV: development
+    tty: true
+    stdin_open: true
+    command: rails server -b 0.0.0.0
 
   web:
     build: ./infra/dev/web

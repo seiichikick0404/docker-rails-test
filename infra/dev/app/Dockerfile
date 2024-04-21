@@ -17,5 +17,5 @@ COPY src /docker-rails-test
 RUN bundle install
 
 #railsを起動する
-# CMD ["rails", "server", "-b", "0.0.0.0"]
-CMD ["./bin/dev"]
+#CMD ["rails", "server", "-b", "0.0.0.0"]
+# CMD ["./bin/dev"]
