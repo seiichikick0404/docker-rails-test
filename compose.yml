@@ -37,7 +37,6 @@ services:
     image: willwill/wait-for-it:latest
     depends_on:
       - db
-    command: ["db:3306", "-t", "30", "--", "echo", "'DB is up!'"]
 
 volumes:
   db-data:
