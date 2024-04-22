@@ -13,5 +13,6 @@ WORKDIR /docker-rails-test
 
 # srcをdocker-rails-testにコピー
 COPY src /docker-rails-test
+
 #コンテナ内にコピーしたGemfileを用いてbundel install
 RUN bundle install
