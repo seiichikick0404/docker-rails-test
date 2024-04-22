@@ -15,7 +15,3 @@ WORKDIR /docker-rails-test
 COPY src /docker-rails-test
 #コンテナ内にコピーしたGemfileを用いてbundel install
 RUN bundle install
-
-#railsを起動する
-#CMD ["rails", "server", "-b", "0.0.0.0"]
-# CMD ["./bin/dev"]
