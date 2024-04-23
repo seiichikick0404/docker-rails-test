@@ -3,7 +3,10 @@ services:
     build: ./infra/dev/db
     environment:
       TZ: Asia/Tokyo
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
       - ./src/db/mysql_data:/var/lib/mysql
 
@@ -21,7 +24,7 @@ services:
       RAILS_ENV: development
     tty: true
     stdin_open: true
-    command: rails server -b 0.0.0.0
+    command: /bin/bash -c "rm -f tmp/pids/server.pid && rails server -b 0.0.0.0"
 
   web:
     build: ./infra/dev/web
