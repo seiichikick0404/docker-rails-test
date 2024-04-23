@@ -16,6 +16,3 @@ COPY src /docker-rails-test
 
 #コンテナ内にコピーしたGemfileを用いてbundel install
 RUN bundle install
-
-# 前回のPIDファイルがある場合は削除
-# ENTRYPOINT ["entrypoint.sh"]
